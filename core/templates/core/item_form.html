@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block extra_head %}
+<style>
+    .asteriskField {
+        display: none;
+    }
+
+    .form-control-label {
+        margin: 0;
+    }
+
+    #the-form {
+        width: 98%;
+        max-width: 640px;
+        margin: 0 auto;
+        border: solid 1px silver;
+        border-radius: 4px;
+        padding: 1%;
+    }
+    #the-form h1{
+        text-align:center;
+    }
+    #id_description{
+        height:100px;
+    }
+    #id_category_id,
+    #id_skill_level_id{
+        width: 120px;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+{% if error %}
+    error
+{% endif %}
+<div id="the-form">
+    <h1>Add Product</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form|crispy}}
+        <p style="text-align:center">
+                <input class='btn btn-primary' type="submit" value="Create">&nbsp;&nbsp;
+                <input class='btn btn-red' type="reset" value="Reset">
+        </p>
+    </form>
+</div>
+{% endblock content %}

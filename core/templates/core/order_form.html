@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block extra_head %}
+<style>
+    .asteriskField {
+        display: none;
+    }
+
+    .form-control-label {
+        margin: 0;
+    }
+
+    #the-form {
+        width: 98%;
+        max-width: 640px;
+        margin: 0 auto;
+        border: solid 1px silver;
+        border-radius: 4px;
+        padding: 1%;
+    }
+    #id_description{
+        height:100px;
+    }
+    #id_category_id,
+    #id_skill_level_id{
+        width: 120px;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<main>
+<div id="the-form">
+    <form method="POST">
+        {% csrf_token %}
+        {{form|crispy}}
+        
+        <p style="text-align:center">
+                <input class='btn btn-primary' type="submit" value="Submit">&nbsp;&nbsp;
+                <input class='btn btn-secondary' type="reset" value="Reset">
+        </p>
+    </form>
+</div>
+</main>
+{% endblock content %}

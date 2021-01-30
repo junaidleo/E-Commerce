@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_head %}
+<style>
+    .container1 {
+        padding: 5px;
+        padding-left: 30px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+            0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .table2 tr th p{
+        font-size:20px;
+        font-weight:bold;
+    }
+    .table2 tr td p{
+        font-size:18px;
+        font-weight:500;
+    }
+    .table3 tr th p{
+        font-size:15px;
+        font-weight:bold;
+    }
+    .table3 tr td p{
+        font-size:14px;
+        font-weight:600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class='container wow fadeIn'>
+    <h2 class="my-5 h2 text-center">Your Orders</h2>
+    <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
+
+        <!-- Navbar brand -->
+        <span class="navbar-brand"> Filter :</span>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+          aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="basicExampleNav">
+
+          <form method='POST' class="form-inline">
+            {% csrf_token %}
+            <div class="md-form my-0">
+              <input class="form-control mr-sm-2" type="text" placeholder="Enter username or email or phone number" name='search' aria-label="Search" style="width:300px">
+              <input class='btn btn-primary' type='submit' value="Search">
+            </div>
+          </form>
+        </div>
+      </nav>
+    {% for ord in order %}
+    {% if ord.ordered %}
+    <div class="container container1 wow fadeIn" style="cursor:pointer" onclick="document.location='{% url 'core:update-order' ord.id %}'">
+        <div class="row">
+            <table class="table table2">
+                <tr>
+                <th><p>{{ord.user}}</p></th>
+                <td>{% for i in ord.items.all %}
+                        <p>{{i}}</p>
+                    {% endfor %}
+                </td>
+                <td>{% if ord.received %}
+                    <p>Received</p>
+                {% elif ord.being_delivered%}
+                    <p>On Delivery</p>
+                {% else %}
+                    <p>Delivery Process Not Started</p>
+                {% endif %}
+                </td>
+                </tr>                
+            </table>
+        </div>
+        <div class='row'>
+            {% for add in address %}
+                    {% if add.id == ord.shipping_address.id %}
+                        <table class="table table3">
+                                <tr>
+                                    <th><p>Address</p></th>
+                                    <td><p>{{add.street_address}}, {{add.apartment_address}}, {{add.state}}, {{add.country}} - {{add.zip}}</p></td>
+                                </tr>
+                                <tr>
+                                    <th><p>Mobile Number</p></th>
+                                    <td><p>+91-{{add.phone_number}}</p></td>
+                                </tr>
+                        </table>
+                    {% endif %}
+                {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    </div>
+</section>
+{% endblock content %}

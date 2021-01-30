@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_head %}
+<style>
+    .container1 {
+        padding: 5px;
+        padding-left: 30px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+            0 6px 20px 0 rgba(0, 0, 0, 0.19);}
+    .table2 tr td p{
+        font-size:18px;
+        font-weight:bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section>
+    <div class='container wow fadeIn'>
+    <h2 class="my-5 h2 text-center">Your Orders</h2>
+    {% for ord in order %}
+    {% if ord.ordered %}
+    <span class="my-5 h4 text-left">{{ord.ordered_date}}</span><hr>
+    <div class="container container1 wow fadeIn">
+        <div class="row">
+            <table class="table table2">
+                <tr>
+                <td>{% for i in ord.items.all %}
+                        <p>{{i}}</p>
+                    {% endfor %}
+                </td>
+                <td>{% if ord.received %}
+                    <p>Received</p>
+                {% elif ord.being_delivered%}
+                    <p>On Delivery</p>
+                {% else %}
+                    <p>Delivery Process Not Started</p>
+                {% endif %}
+                </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    {% endfor %}
+    </div>
+</section>
+{% endblock content %}
